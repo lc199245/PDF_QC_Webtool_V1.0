@@ -1,0 +1,182 @@
+{% load staticfiles %}
+
+<html>
+
+
+
+	<head>
+		<title>PDF QC WebTool V1.0</title>
+		<!-- Latest compiled and minified CSS -->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		
+		<link rel="stylesheet" href="{% static 'css/pdf_style.css' %}">
+		<link rel="stylesheet" href="{% static 'css/loading.css' %}">
+
+		<link rel="stylesheet" type="text/css" href="//cdn.gotraffic.net/projector/v0.10.71/bvp.css">
+		<link rel="stylesheet" media="all" type="text/css" href="//www.bbthat.com/assets/v1.2.1/that.css">
+		<script src="{% static 'javascript/pdf_js.js' %}"></script>
+		<script src="{% static 'javascript/loading.js' %}"></script>
+		<link href="https://nav.bloomberg.com/public/stylesheets/bb-global-nav-4c00f7c851.css" media="all" rel="stylesheet" type="text/css">
+		<link href="https://nav.bloomberg.com/public/stylesheets/bb-global-footer-a141107103.css" media="all" rel="stylesheet" type="text/css">
+
+	</head>
+
+	<body>
+
+
+		<div class="img_header">
+			<img src="{% static 'Pics/6-1.png' %}"/>
+			<img src="{% static 'Pics/6-2.png' %}" style="float:right;" />
+		</div>
+
+
+		<div>
+		<nav class="navbar navbar-default" style="height:60px;">
+		 	<div class="container-fluid">
+		    <!-- Brand and toggle get grouped for better mobile display -->
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+		        <span class="sr-only">Toggle navigation</span>
+		      </button>
+		      <a class="navbar-brand active" href="{% url 'FieldView:mainpage' %}"><img src="{% static 'Pics/home.png' %}" style="max-width:30px; max-width:30px;" /><span class="sr-only">(current)</span></a>
+		    </div>
+
+		    <!-- Collect the nav links, forms, and other content for toggling -->
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		      <ul class="nav navbar-nav">
+		        <li class="dropdown">
+		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ginnie Mae<span class="caret"></span></a>
+		          <ul class="dropdown-menu">
+		            <li><a class='active' href="#">Ginnie Mae</a></li>
+		            <li><a href="#">Fannie Mae</a></li>
+		            <li><a href="#">Freddie Mac</a></li>
+		            <li role="separator" class="divider"></li>
+		          </ul>
+		        </li>
+		      </ul>
+		      <form class="navbar-form navbar-left">
+		        <div class="form-group">
+		          <input type="text" class="form-control" placeholder="Search">
+		        </div>
+		        <button type="submit" class="btn btn-default">Submit</button>
+		      </form>
+		      <ul class="nav navbar-nav navbar-right">
+		        <li><a target="_blank" href="{%url 'FieldView:contact_us' %}">Contact us</a></li>
+		      </ul>
+		    </div><!-- /.navbar-collapse -->
+		  </div><!-- /.container-fluid -->
+		</nav>
+		</div>
+
+		<div class="well pre-scrollable" style="max-height: 900px; max-width: 80%; margin:0 auto;" >
+			{% if pdf_file_list %}
+			    
+			    <table class="table table-striped" >
+			    <tr>
+			    	<th hidden>  Doc_ID </th>
+			    	<th hidden>  Agency_Name </th>
+			    	<th hidden>  Version  </th>
+			    	<th>  PDF File Name </th>
+			    	<th>  Import Date Time </th>
+			    	<th>  QC Analyst </th>
+			    	<th>  QC Start Time </th>
+			    	<th>  Errors Outstanding</th>
+			    	<th>  Status </th>
+			    	
+			    </tr>
+			    {% for file_item in pdf_file_list %}
+			    <tr>
+			    	<td hidden> {{ file_item.Doc_ID }}</td>
+			    	<td hidden><a class="link_pdf_file" href="http://www.ginniemae.gov/investors/disclosures_and_reports/Pages/remic_prospectuses.aspx">  {{ file_item.Agency_Name }}  </a></td>
+			    	<td hidden> {{ file_item.Doc_Version }}</td>
+			    	{% if file_item.Current_Status != "Processed"%}
+			    	<td><a href="{% url 'FieldView:select_pdf' file_item.Doc_ID %}" class="link_pdf_file" >{{ file_item.PDF_File_Name }}</a></td>
+			    	{% else %}
+			    	<td>{{ file_item.PDF_File_Name }}</td>
+			    	{% endif %}
+			    	{% if file_item.Login_User_Name %}
+			    	<td>{{ file_item.Import_Date_Time }} </td>
+			    	<td>{{ file_item.Login_User_Name }} </td>
+			    	<td>{{ file_item.QC_Start_Time }} </td>
+			    	<td>{{ file_item.Number_Of_Items}} </td>
+			    	<td id="{{file_item.Doc_ID}}_cus">{{ file_item.Current_Status }} </td>
+			    	{% elif file_item.Current_Status == "Processed"%}
+			    	<td>{{ file_item.Import_Date_Time }} </td>
+			    	<td>{{ file_item.Login_User_Name }} </td>
+			    	<td>{{ file_item.QC_Start_Time }} </td>
+			    	<td>{{ file_item.Number_Of_Items}} </td>
+			    	<td id="{{file_item.Doc_ID}}_cus">{{ file_item.Current_Status }} </td>
+			    	{% else %}
+			    	<td> </td>
+			    	<td> </td>
+			    	<td> </td>
+			    	<td>{{ file_item.Number_Of_Items}} </td>
+			    	<td> Open </td>
+			    	{% endif %}
+			    	
+			    </tr>
+			    {% endfor %}
+			    </table>
+			{% else %}
+			    <p> No pdf files are available. </p>
+			{% endif %}
+		</div>
+
+		
+		<div style="height=100px;">
+			&nbsp;
+		</div>
+		<div style="height=100px;">
+			&nbsp;
+		</div>
+		<div style="height=100px;">
+			&nbsp;
+		</div>
+		
+		<div style="max-width:100%;margin:0 auto;">
+				<center>
+					<a target="_blank" href="http://www.bloomberg.net"><img align="middle" src="https://www.bloomberg.com/notices/content/themes/c/images/bloomberg-logo.svg"></a>
+				</center>
+		</div>
+
+		<footer class="bb-global-footer" > 
+			<div class="bb-global-footer__content" style="min-width:80%;"> 
+				<div class="bb-global-footer__group" style="min-width:50%;"> 
+					<a class="bb-global-footer__link" href="//www.bloomberg.com/tos" style="font-size:1.5rem;">Terms of Service</a> 
+					<a class="bb-global-footer__link" href="//www.bloomberg.com/trademarks" style="font-size:1.5rem;">Trademarks</a> 
+					<a class="bb-global-footer__link" href="//www.bloomberg.com/privacy" style="font-size:1.5rem;">Privacy Policy</a> 
+				</div> 
+
+				<div class="bb-global-footer__group" style="min-width:50%;"> 
+					<a class="bb-global-footer__link" href="//www.bloomberg.com/careers/?utm_source=dotcom&amp;utm_medium=footer" style="font-size:1.5rem;">Careers</a> 
+					<a class="bb-global-footer__link" href="http://nytm.org/made-in-nyc" style="font-size:1.5rem;">Made in Princeton</a> 
+					<a class="bb-global-footer__link" href="http://bloombergmedia.com/" style="font-size:1.5rem;">Advertise</a> 
+					<a class="bb-global-footer__link" href="//www.bloomberg.com/feedback" style="font-size:1.5rem;">Website Feedback</a> 
+					<a class="bb-global-footer__link" href="//www.bloomberg.com/help" style="font-size:1.5rem;">Help</a> 
+				</div>
+			</div>
+			<div style="height=100px;">
+				&nbsp;
+			</div> 
+			<center><small class="bb-global-footer__copyright" style="font-size:1.2rem;">©2016 Bloomberg L.P. All Rights Reserved</small></center> 
+ 
+		</footer>
+
+
+
+
+
+	</body>
+
+</html>

@@ -1,0 +1,152 @@
+{% load staticfiles %}
+
+<head>
+	<title>Django with Bootstrap</title>
+	<!-- Latest compiled and minified CSS -->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	
+	<link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="{% static 'css/polls.css' %}">
+</head>
+
+<body>
+	<nav class="navbar navbar-default">
+	 	<div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="#">PDF Extractor 1.3.0 <span class="sr-only">(current)</span></a>
+	    </div>
+
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	        <li class='active'><a href="#">Fields' Values List</a></li>
+	        <li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+	          <ul class="dropdown-menu">
+	            <li><a href="#">Action</a></li>
+	            <li><a href="#">Another action</a></li>
+	            <li><a href="#">Something else here</a></li>
+	            <li role="separator" class="divider"></li>
+	            <li><a href="#">Separated link</a></li>
+	            <li role="separator" class="divider"></li>
+	            <li><a href="#">One more separated link</a></li>
+	          </ul>
+	        </li>
+	      </ul>
+	      <form class="navbar-form navbar-left">
+	        <div class="form-group">
+	          <input type="text" class="form-control" placeholder="Search">
+	        </div>
+	        <button type="submit" class="btn btn-default">Submit</button>
+	      </form>
+	      <ul class="nav navbar-nav navbar-right">
+	        <li><a href="#">Link</a></li>
+	        <li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+	          <ul class="dropdown-menu">
+	            <li><a href="#">Action</a></li>
+	            <li><a href="#">Another action</a></li>
+	            <li><a href="#">Something else here</a></li>
+	            <li role="separator" class="divider"></li>
+	            <li><a href="#">Separated link</a></li>
+	          </ul>
+	        </li>
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+
+	<div>
+
+		<div class="pre-scrollable" style="max-height: 900px; max-width: 50%; float: left;" >
+		{% if first_test_field_value_list %}
+		    
+		    <table class="table table-striped" >
+		    <tr>
+		    	<th>  Field_Value_ID </th>
+		    	<th>  Field_Name_ID </th>
+		    	<th>  Field_Value </th>
+		    	<th>  Is_Numeric </th>
+		    	<th>  Calcrt_Value  </th>
+		    	<th>  Calcrt_ID </th>
+		    	<th>  Highlighted PDF Link </th>
+		    </tr>
+		    {% for field_value in first_test_field_value_list %}
+		    <tr>
+		    	{% for item in field_value %}	
+		        	{% if forloop.last %}
+
+		        	<td>
+<!-- 		        	<form action = "{% url 'polls:highlight' item %}">
+						<input type='submit' value='{{ item }}_highlight.jpg' />
+						</form> -->
+						<script type='text/JavaScript' language="JavaScript">
+							function ajax_highlight(field_value_id){
+								// alert(field_value_id);
+								// $.getJSON("/polls/" + field_value_id + "/ajax_highlight/", 
+								// 	function (data){
+								// 		$.each(data, function(){
+								// 			document.getElementById('highlight_image').src = this.binpic;
+								// 		} );
+								// 	}
+								//  );
+								$.ajax({
+								    type:'GET',
+								    url:"/polls/" + field_value_id +  "/ajax_highlight",
+
+								    dataType:'json',
+								    success:function(data)
+								        {
+								            // alert(data[0].binpic);
+								            document.getElementById('highlight_image').src = "data:image/jpeg;base64,"+data[0].binpic;
+								            document.getElementById('highlight_image').style = "max-width:100%; max-height:100%;";
+								            // document.getElementById('ajax_text').InnerHTML = data.binpic;
+								        },
+								    error:function(data)
+								    {
+								        alert(data); 
+								    }
+								});
+							};
+						</script>
+
+						<button class="btn btn-default" onclick="ajax_highlight({{ item }})"> {{ item }}_highlight.jpg </button>
+					</td>
+		        	{% else %}
+		        	<td> {{ item }} </td>
+		        	{% endif %}
+		        {% endfor %}
+		    </tr>
+		    {% endfor %}
+		    </table>
+		{% else %}
+		    <p> No polls are available. </p>
+		{% endif %}
+		</div>
+
+		<div class="pre-scrollable" style="max-height: 900px; max-width: 50%; float: right;" >
+			<img id="highlight_image" src="data:image/jpeg;base64,{{ binpic }}" alt="Image not found" onerror="this.onerror=null;this.src='{% static 'Pics/alt-image.png' %}';this.style='width:200px; height:200px;';" style = "max-width:100%; max-height:100%;" />
+			<!-- style = "width:1260px; height:1768px;" -->
+			<!-- <img src="data:image/jpeg;base64,{{ binpic }}" alt="Image not found" onerror="this.onerror=null;this.src='Temp/119027_temp.jpp'" id="myimg" style = "width:1260px; height:1768px;">	 -->
+		</div>
+	</div>
+
+
+</body>

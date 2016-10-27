@@ -1,0 +1,129 @@
+/*h1 a {
+	color: #FCA205;
+	font-family: 'Lobster';
+}*/
+
+
+
+a {
+	color: #999999;
+}
+
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	padding-left:30px;
+	padding-right:30px;
+}
+
+.img_header {
+	/*background-color: #494949 ;*/
+	background-color: #2800d7;
+}
+
+.link_pdf_file {
+	color:blue;
+}
+
+
+.info_border {
+	border:5px blue;
+	background-color: #2800d7;
+	color:#2800d7;
+	font-weight: bold;
+}
+
+th {
+	margin:0 auto;	
+}
+
+td {
+	margin:0 auto;
+	align:center;
+}
+
+
+.modal {
+	width:100%;}
+
+.modal.modal-wide .modal-dialog {
+  width: 90%;
+}
+.modal-wide .modal-body {
+  overflow-y: auto;
+}
+#TallModal .modal-body p { margin-bottom: 900px }
+
+
+.center-cell {
+	text-align: center;
+}
+
+
+#EditModal {
+	top:40%;
+	left:20%;
+	outline: none;
+}
+
+.modal-backdrop {background: none;}
+
+#FixModal {
+	top:40%;
+	left:20%;
+	outline: none;
+}
+
+
+.modal-open {
+  overflow: initial;
+}
+
+.fix-modal-open {
+  overflow: initial;
+}
+
+.small-cell-1{
+	width: 8%;
+	min-width: 8%;
+	max-width: 8%;
+}
+
+.small-cell-2{
+	width: 10%;
+	min-width: 10%;
+	max-width: 10%;
+}
+
+
+.small-cell-3{
+	width: 16%;
+	min-width: 16%;
+	max-width: 16%;
+}
+
+.small-cell-4{
+	width: 30%;
+	min-width: 30%;
+	max-width: 30%;
+}
+
+.small-cell-5{
+	width: 12%;
+	min-width: 12%;
+	max-width: 12%;
+}
+
+.small-cell-6{
+	width: 5%;
+	min-width: 5%;
+	max-width: 5%;
+}
+
+
+.fixed-table-header{
+	font-size:20px; 
+	background-color: #9da5a8;
+	color:#ffffff;
+
+}

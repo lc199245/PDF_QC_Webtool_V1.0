@@ -1,0 +1,14 @@
+{% load staticfiles %}
+
+<!-- {% with "TempPics/"|add:field_value_id|add:"_temp.jpg" as img_static %}
+<img src="{% static img_static%}" id="myimg" style = "width:1260px; height:1768px;">
+{% endwith %}
+ -->
+
+
+
+<img src="data:image/jpeg;base64,{{ binpic }}" id="myimg" style = "max-width:100%; max-height:100%">
+
+<!-- width:1260px; height:1768px; -->
+{{ field_value_id }}
+
